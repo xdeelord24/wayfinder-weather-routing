@@ -1,0 +1,12 @@
+.git
+.codex-remote-attachments
+.venv
+.env
+.env.*
+**/node_modules
+**/__pycache__
+frontend/dist
+backend/staticfiles
+output
+.playwright-cli
+*.log

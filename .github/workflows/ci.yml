@@ -1,0 +1,55 @@
+name: Verify assessment
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO_SECRET_KEY: ci-only-not-a-production-secret-9d82a764
+      DJANGO_DEBUG: "false"
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,testserver
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: npm ci
+        working-directory: frontend
+      - run: npm test
+        working-directory: frontend
+      - run: npm run build
+        working-directory: frontend
+      - run: python manage.py test
+        working-directory: backend
+      - run: python manage.py check
+        working-directory: backend
+      - run: python manage.py collectstatic --noinput
+        working-directory: backend
+      - name: Build deployment image
+        run: docker build -t wayfinder-assessment .
+      - name: Check the production container
+        run: |
+          docker run -d --name wayfinder -p 8000:8000 \
+            -e DJANGO_SECRET_KEY=ci-only-not-a-production-secret-9d82a764 \
+            -e DJANGO_DEBUG=false \
+            -e DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost \
+            wayfinder-assessment
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8000/api/health; then break; fi
+            sleep 2
+          done
+          python scripts/smoke.py
+      - name: Container diagnostics
+        if: failure()
+        run: docker logs wayfinder || true
