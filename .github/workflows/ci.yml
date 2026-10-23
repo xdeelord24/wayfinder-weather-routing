@@ -49,7 +49,7 @@ jobs:
             if curl --fail --silent http://127.0.0.1:8000/api/health; then break; fi
             sleep 2
           done
-          python scripts/smoke.py
+          python scripts/smoke.py --frontend
       - name: Container diagnostics
         if: failure()
         run: docker logs wayfinder || true

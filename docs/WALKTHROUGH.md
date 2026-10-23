@@ -39,6 +39,6 @@ Record this with your own narration. Replace the verification placeholders with 
 
 ## Submission items
 
-- Public repository URL: pending publication.
+- Public repository: [xdeelord24/wayfinder-weather-routing](https://github.com/xdeelord24/wayfinder-weather-routing).
 - Hosted application URL: deployment deferred at the user's request.
 - Loom recording URL: pending recording with your narration and account.

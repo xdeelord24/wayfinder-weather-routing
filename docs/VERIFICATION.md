@@ -15,11 +15,12 @@ Recorded checks below were performed on **October 24, 2026, Asia/Manila** (Octob
 | Frontend type checking and production build | Passed | `npm.cmd run build` in `frontend/` |
 | Frontend behavior tests | Passed: 15 tests | `npm.cmd test` in `frontend/`; API and map are mocked in component tests. |
 | npm dependency audit | Passed: 0 reported vulnerabilities | `npm.cmd audit` in `frontend/`; this is a dependency audit, not a complete security review. |
-| Local frontend and API on one origin | Passed | Built frontend served by Django with `DJANGO_DEBUG=false` at `http://127.0.0.1:8001`. |
-| Desktop browser workflow | Passed for recorded scenarios | Playwright at 1280×720: slider traversal, clear/blocked flows, 10-mile selection, and checkpoint details. |
-| Mobile browser workflow | Pending final checks | Final responsive-layout verification is in progress. |
-| Docker image and container startup | Pending CI | Workflow builds the image and runs the HTTP smoke test against its container. No successful run recorded yet. |
-| GitHub Actions run | Pending | Workflow configured; repository publication and successful run still need confirmation. |
+| Local frontend and API on one origin | Passed | Built frontend served by Django with `DJANGO_DEBUG=false` at `http://127.0.0.1:8001`; smoke `--frontend` verified HTTP 200 HTML/title and both JavaScript/CSS entry assets with their response types/content. |
+| Desktop browser workflow | Passed for recorded scenarios | Final Playwright check at 1440×1000; earlier 1280×720 check also exercised clear/blocked flows and 10-mile selection. |
+| Mobile browser workflow | Passed for recorded scenarios | Playwright at 390×844: no horizontal page overflow, recommended route first, route/checkpoint selection, and demo/live mode transitions. |
+| Docker image and container startup | Passed on initial published revision | CI built the image, started Gunicorn, and passed the demo API smoke test against the container at revision `a31400f`. |
+| GitHub Actions run | Passed on initial published revision | [Successful run 39989253468](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/39989253468): 47 tests, frontend build, Django check/static collection, Docker build, and container API smoke. |
+| Container HTML/assets smoke extension | Pending next CI | The added `--frontend` assertions passed locally for HTML and two entry assets; container verification awaits the next workflow run. |
 
 ## Scenario evidence
 
@@ -35,7 +36,9 @@ All three responses contained 49 frames. Assertions checked checkpoint order, fi
 
 The test suites cover weather thresholds, strict cargo cutoffs, maximum combined hazard, unavailable forecasts, midpoint exposure, nonuniform checkpoint timing, duplicate alternatives, bounded provider attempts, missing-key errors, plan expiry, origin timezone handling, and daylight-saving gaps/repeated hours. Provider behavior in these tests uses fixtures or mocks. Independent Python probes also checked a route ending exactly on its checkpoint interval and the km/h, mm, and cm conversions.
 
-The recorded desktop Playwright traversal moved through **all 49 slider positions in 1,268 ms**. The browser's recorded API resource count stayed **3 before / 3 after**, the map retained the same canvas, and the recommendation stayed unchanged. This is a local observation, not a cross-device performance guarantee. Clear and blocked form submissions and checkpoint details were also exercised against the local Django service.
+The final production-build Playwright traversal moved through **all 49 slider positions in 1,148 ms**. The browser's recorded API resource count stayed **3 before / 3 after**, the map retained the same canvas, and the recommendation stayed unchanged. This is a local observation, not a cross-device performance guarantee. Clear and blocked form submissions and checkpoint details were also exercised against the local Django service.
+
+Final desktop/mobile checks reported **zero page errors, zero console errors, and zero console warnings**. At 390×844, the page had no horizontal overflow and showed the recommended route first. Selecting the I-94 route and its mile-25 checkpoint displayed 26.1 mph wind, 0.12 in/hr rain, zero snow, and 25 miles of represented exposure. Switching to live mode without a key cleared the route cards and displayed the missing-key notice; returning to demo worked.
 
 ## Live and submission checks
 
@@ -46,9 +49,9 @@ The recorded desktop Playwright traversal moved through **all 49 slider position
 | Live three-route example | Deferred by request | Later record origin, destination, departure, cargo, spacing, and distinct alternatives. |
 | Hosted frontend and `/api/health` | Deferred by request | Later record public URL, deployment revision, and check time. |
 | Hosted live planning and corridor request | Deferred by request | Later record successful live request plus visible route and corridor results. |
-| Public repository | Pending | Repository URL and published revision; verify no private files or credentials. |
+| Public repository | Verified public | [xdeelord24/wayfinder-weather-routing](https://github.com/xdeelord24/wayfinder-weather-routing), branch `main`; initial published revision `a31400fe4fa33e78c64267e76e6676f5f8b5c166`. A 53-file staged scan excluded the assessment PDF and `.env` and found no actual secret. |
 | Loom walkthrough | Pending | Recording URL; verify narration and coverage. |
 
 ## Evidence notes
 
-Browser screenshots are stored locally in `output/playwright/` and are excluded from Git. No live-provider, hosted-site, repository-publication, or recording completion has been asserted in this record. Update pending rows only after their corresponding checks complete.
+Browser screenshots are stored locally in `output/playwright/`, which is excluded from Git; the selected repository preview is [assets/demo-preview.png](assets/demo-preview.png). The repository is public and its initial revision passed CI. Live-provider, hosted-site, and recording completion have not been asserted. The container HTML/assets smoke extension remains pending its own CI result.

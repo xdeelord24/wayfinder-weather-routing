@@ -1,15 +1,35 @@
 """Exercise the running HTTP API without credentials or mocked HTTP responses.
 
-Usage: python scripts/smoke.py [http://127.0.0.1:8000]
+Usage: python scripts/smoke.py [http://127.0.0.1:8000] [--frontend]
 These are explicit synthetic demo scenarios, not live routing verification.
 """
+import argparse
 import json
-import sys
+import re
 import urllib.error
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
-BASE_URL = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8000").rstrip("/")
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("base_url", nargs="?", default="http://127.0.0.1:8000")
+parser.add_argument("--frontend", action="store_true", help="Also verify the served production HTML and its entry assets")
+args = parser.parse_args()
+BASE_URL = args.base_url.rstrip("/")
+
+
+def check_frontend():
+    with urllib.request.urlopen(BASE_URL + "/", timeout=15) as response:
+        html = response.read().decode()
+        assert response.status == 200 and "Wayfinder" in html
+    assets = set(re.findall(r'(?:src|href)="(/assets/[^" ]+\.(?:js|css))"', html))
+    assert any(path.endswith(".js") for path in assets)
+    assert any(path.endswith(".css") for path in assets)
+    for path in assets:
+        with urllib.request.urlopen(BASE_URL + path, timeout=15) as response:
+            mime = response.headers.get_content_type()
+            assert response.status == 200 and len(response.read()) > 0
+            assert mime in {"text/javascript", "application/javascript", "text/css"}, (path, mime)
+    return len(assets)
 
 
 def request(path, body=None):
@@ -23,6 +43,7 @@ def request(path, body=None):
 
 
 def main():
+    assets = check_frontend() if args.frontend else None
     health = request("/api/health")
     assert health["status"] == "ok"
     chicago = request("/api/locations?q=Chicago&mode=demo")["locations"][0]
@@ -68,7 +89,7 @@ def main():
                         "cells_changing_risk_by_48h": changed_cells,
                         "recommended_route_id": plan["recommended_route_id"]})
     print(json.dumps({"base_url": BASE_URL, "status": "passed", "live_routing_configured": health.get("routing_configured"),
-                      "scope": "synthetic demo HTTP integration", "results": results}, indent=2))
+                      "scope": "synthetic demo HTTP integration", "frontend_entry_assets": assets, "results": results}, indent=2))
 
 
 if __name__ == "__main__":
