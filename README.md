@@ -16,7 +16,7 @@ For live trips, configure `TOMTOM_API_KEY`, select real origin and destination s
 
 The current delivery focuses on the working demo. Live TomTom verification and hosted deployment are deferred at the user's request. Submission and verification status is recorded in [docs/VERIFICATION.md](docs/VERIFICATION.md). Deployment instructions and the presentation script are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md).
 
-Verified on October 24, 2026 (Asia/Manila): **32 backend tests, 15 frontend tests, production build, all three demo scenarios over HTTP, and desktop/mobile browser checks passed**. All 49 forecast positions preserve the map and recommendation without additional API requests. [The initial published CI run](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/39989253468) also passed its Docker build and Gunicorn-container API smoke check; see the evidence record for revision-specific scope.
+Verified on October 24, 2026 (Asia/Manila): **32 backend tests, 15 frontend tests, production build, all three demo scenarios over HTTP, and desktop/mobile browser checks passed**. All 49 forecast positions preserve the map and recommendation without additional API requests. [The successful CI run](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/39989567538) also passed its Docker build and Gunicorn-container frontend/API smoke check; see the evidence record for revision-specific scope.
 
 ## Local development
 
@@ -132,7 +132,7 @@ npm.cmd run build
 
 The HTTP smoke script exercises mixed/25-mile, clear/10-mile, and blocked/50-mile scenarios, checking corridor size/frame count, total exposure mileage, final arrival, and moving weather fronts. Pass an optional base URL to test another port: `.venv\Scripts\python.exe scripts/smoke.py http://127.0.0.1:8001`. Add `--frontend` when the backend serves the built frontend to check the HTML title and JavaScript/CSS entry assets, including response types and content.
 
-GitHub Actions runs backend tests/checks, frontend tests/build, static collection, a Docker image build, and the HTTP smoke test against the container. The initial published revision passed these checks. The added `--frontend` HTML/assets checks passed locally and await the next container CI run.
+GitHub Actions runs backend tests/checks, frontend tests/build, static collection, a Docker image build, and the HTTP smoke test against the container. Revision `cb8ae01` passed all checks, including `--frontend` verification of the served HTML and JavaScript/CSS entry assets.
 
 See [the verification record](docs/VERIFICATION.md) for commands actually run, results, and remaining live checks. Passing fixture tests does not establish that external providers or a hosted deployment work.
 

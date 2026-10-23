@@ -18,9 +18,9 @@ Recorded checks below were performed on **October 24, 2026, Asia/Manila** (Octob
 | Local frontend and API on one origin | Passed | Built frontend served by Django with `DJANGO_DEBUG=false` at `http://127.0.0.1:8001`; smoke `--frontend` verified HTTP 200 HTML/title and both JavaScript/CSS entry assets with their response types/content. |
 | Desktop browser workflow | Passed for recorded scenarios | Final Playwright check at 1440×1000; earlier 1280×720 check also exercised clear/blocked flows and 10-mile selection. |
 | Mobile browser workflow | Passed for recorded scenarios | Playwright at 390×844: no horizontal page overflow, recommended route first, route/checkpoint selection, and demo/live mode transitions. |
-| Docker image and container startup | Passed on initial published revision | CI built the image, started Gunicorn, and passed the demo API smoke test against the container at revision `a31400f`. |
-| GitHub Actions run | Passed on initial published revision | [Successful run 39989253468](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/39989253468): 47 tests, frontend build, Django check/static collection, Docker build, and container API smoke. |
-| Container HTML/assets smoke extension | Pending next CI | The added `--frontend` assertions passed locally for HTML and two entry assets; container verification awaits the next workflow run. |
+| Docker image and container startup | Passed | CI built the image, started Gunicorn, and passed the demo API smoke test against the container at revision `cb8ae01`. |
+| GitHub Actions run | Passed | [Successful run 39989567538](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/39989567538): 47 tests, frontend build, Django check/static collection, Docker build, and container frontend/API smoke. |
+| Container HTML/assets smoke extension | Passed | The `--frontend` assertions verified HTTP 200 HTML/title and two JavaScript/CSS entry assets with correct response types and nonempty content, both locally and in the CI container. |
 
 ## Scenario evidence
 
@@ -54,4 +54,4 @@ Final desktop/mobile checks reported **zero page errors, zero console errors, an
 
 ## Evidence notes
 
-Browser screenshots are stored locally in `output/playwright/`, which is excluded from Git; the selected repository preview is [assets/demo-preview.png](assets/demo-preview.png). The repository is public and its initial revision passed CI. Live-provider, hosted-site, and recording completion have not been asserted. The container HTML/assets smoke extension remains pending its own CI result.
+Browser screenshots are stored locally in `output/playwright/`, which is excluded from Git; the selected repository preview is [assets/demo-preview.png](assets/demo-preview.png). The repository is public and revision `cb8ae01` passed CI, including the container HTML/assets checks. Live-provider, hosted-site, and recording completion have not been asserted. Subsequent documentation-only commits do not change the verified application or workflow.
