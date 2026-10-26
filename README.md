@@ -14,7 +14,7 @@ The application includes a clearly labeled **Chicago → Detroit demo** with thr
 
 For live trips, configure `TOMTOM_API_KEY`, select real origin and destination suggestions, enter a departure within the next 48 hours, and choose a cargo load and checkpoint spacing of 10, 25, or 50 miles. The default spacing is 25 miles. Departure is interpreted in the origin's displayed timezone.
 
-The current delivery focuses on the working demo. Live TomTom verification and hosted deployment are deferred at the user's request. Submission and verification status is recorded in [docs/VERIFICATION.md](docs/VERIFICATION.md). Deployment instructions and the presentation script are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md).
+Live verification and deployment preparation resumed on October 26, 2026. Real Open-Meteo forecasts passed bounded checks at three US coordinates through 48 hours. TomTom routing still needs a configured server-side key; hosted deployment and the Loom recording remain pending. Current evidence is recorded in [docs/VERIFICATION.md](docs/VERIFICATION.md). Deployment instructions and recording scripts are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md).
 
 Verified on October 24, 2026 (Asia/Manila): **32 backend tests, 15 frontend tests, production build, all three demo scenarios over HTTP, and desktop/mobile browser checks passed**. All 49 forecast positions preserve the map and recommendation without additional API requests. [The successful CI run](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/39989567538) also passed its Docker build and Gunicorn-container frontend/API smoke check; see the evidence record for revision-specific scope.
 
@@ -135,6 +135,8 @@ The HTTP smoke script exercises mixed/25-mile, clear/10-mile, and blocked/50-mil
 GitHub Actions runs backend tests/checks, frontend tests/build, static collection, a Docker image build, and the HTTP smoke test against the container. Revision `cb8ae01` passed all checks, including `--frontend` verification of the served HTML and JavaScript/CSS entry assets.
 
 See [the verification record](docs/VERIFICATION.md) for commands actually run, results, and remaining live checks. Passing fixture tests does not establish that external providers or a hosted deployment work.
+
+For bounded real-provider checks, run `.venv\Scripts\python.exe scripts/verify_live.py` from the repository root. This checks Open-Meteo at three actual coordinates and writes a credential-free local evidence record under `output/live-verification/`. Add `--live-plan` after configuring `TOMTOM_API_KEY` to check live geocoding, route planning, checkpoint forecasts, and all 49 corridor frames. These service-level checks are separate from hosted HTTP and browser verification.
 
 ## Assumptions and limits
 

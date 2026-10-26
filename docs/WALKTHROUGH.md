@@ -1,44 +1,208 @@
-# Seven-minute walkthrough
+# Spotter walkthrough: five-minute and seven-minute options
 
-Record this with your own narration. Replace the verification placeholders with results from [VERIFICATION.md](VERIFICATION.md), and mention only checks you actually completed. The fixture demo is suitable for a repeatable presentation; identify it explicitly.
+Record with your own voice. Use this as a speaking guide, with your usual wording and pauses while the app responds. The assessment requests **5–10 minutes**. Use the **exactly-five-minute option for Loom Starter**, or aim for 7–8 minutes if the account permits longer recording. Spend most of the video on route logic and the interactive map; those make up 80% of the rubric. Keep the code tour short.
 
-| Time | Show | Suggested narration |
-| --- | --- | --- |
-| 0:00–0:35 | Landing view and trip form | “I built Wayfinder to compare truck routes using the weather expected when the truck reaches each part of the trip. The goal is to make the recommendation understandable, including when none of the routes qualifies.” |
-| 0:35–1:15 | Demo label; Chicago → Detroit inputs; cargo and checkpoint spacing | “This is the repeatable demo: three saved OSRM driving routes with synthetic weather. They follow real road geometry, but the snapshot does not verify truck restrictions. Live mode uses TomTom and Open-Meteo. Departure uses the origin's timezone, cargo affects the weather rules, and checkpoint spacing controls the sampling detail.” |
-| 1:15–2:15 | Route cards; select each route; show recommendation reason | “Each route reports travel time and estimated miles in each severity. A No Travel checkpoint makes a route ineligible. Among the remaining routes, the comparison prioritizes Severe exposure, then High exposure, then average risk, and finally travel time.” |
-| 2:15–3:00 | Select a checkpoint; point out ETA, wind, rain, snow, and reasons | “This forecast corresponds to the truck's estimated arrival here. Arrival times follow the routing provider's cumulative time along the route. The worst applicable weather condition determines the checkpoint risk, including the assessment's cargo-related wind rules.” |
-| 3:00–3:50 | Forecast overlay and slider at +0, +24, and +48 hours | “This is a separate view of the corridor at a chosen time. All 49 hourly frames load together, so scrubbing the slider changes colors locally. It doesn't change the route recommendation, which still uses each checkpoint's arrival time.” |
-| 3:50–4:30 | Change checkpoint spacing and show a hazard scenario or unavailable state | “Checkpoint spacing trades sampling detail for provider work. Missing weather is shown as unavailable and cannot improve a route's score. If every route is ineligible, the app explains that instead of naming a winner.” |
-| 4:30–5:25 | README architecture diagram and risk table | “The React frontend handles the form and map. Django keeps the provider key private, normalizes forecasts, samples the routes, and computes risk. I separated these responsibilities so the risk rules can be tested without network access.” |
-| 5:25–6:20 | Actual test output and verification record | “The tests cover exact risk boundaries, strict cargo cutoffs, exposure-mile totals, ETA interpolation, and ranking. Here are the checks I ran. I record fixture checks separately from real provider and deployed-site checks.” |
-| 6:20–7:00 | Return to application; show mobile layout if verified | “The main tradeoffs are sampled weather, a bounded corridor grid, and forecasts limited by the provider's horizon. Next I would add vehicle dimensions, a more complete trip schedule, and production monitoring. The repository includes setup, deployment instructions, and the exact assumptions behind the score.” |
+Prepare with [RECORDING_CHECKLIST.md](RECORDING_CHECKLIST.md). Replace the evidence fields below before recording; a placeholder is not a completed check.
 
-## Before recording
+| Recording fact | Verified result |
+| --- | --- |
+| Hosted URL | **Pending deployment verification** |
+| Live example | **Pending: origin, destination, departure, load, spacing, actual route count** |
+| Live check time | **Pending: date and timezone** |
+| Deployment revision | **Pending: short commit SHA** |
+| Test evidence | Use dated, revision-specific results in [VERIFICATION.md](VERIFICATION.md). |
+| Preliminary weather check | Open-Meteo responded at three US locations on 2026-10-26 at 00:32 UTC (08:32 Manila). This does not establish TomTom routing or hosted deployment. |
 
-- Start the backend and frontend, open the demo, and wait for the map tiles and overlay to settle.
-- Use the same window size throughout the desktop portion; enlarge the browser text if labels are difficult to read in the recording.
-- Pick a checkpoint with an understandable risk reason. Rehearse the route and slider changes once.
-- Prepare the README and the actual test output in separate tabs. Hide `.env`, terminal history containing secrets, and provider dashboards with API keys.
-- If showing live mode, use verified inputs and state the observation time. If live access is unavailable, keep the visible demo label and say so.
-- If using Render Free, open the deployed site ahead of recording to allow for its idle cold start. A successful local run is not a hosted-site check.
+## Five-minute version for Loom Starter
 
-## Interview discussion notes
+Loom Starter stops recording at **5:00**, which is also the assessment's minimum duration. Use this compact version if your account has that limit. Finish speaking by **4:50**, leave the final app view visible, and let the recorder reach **5:00**. Check the saved duration and do not trim it below five minutes. The account's allowance still needs to be checked; do not buy an upgrade for this script. [Loom recording limits](https://support.atlassian.com/loom/docs/how-long-can-i-record/).
 
-**Why mileage weighting?** A simple average over checkpoints gives endpoint samples too much influence and changes unfairly with sampling density. Midpoint boundaries partition the route, so every mile contributes once.
+The main narration below is approximately 540 words. Practice it once with a timer, speaking naturally while performing the actions. Have results loaded before recording so provider wait time does not consume the five-minute take.
 
-**Why not score a route from the slider?** The slider asks “what does the corridor look like at this time?” Routing asks “what does the truck encounter at each arrival time?” Keeping those separate avoids presenting a stationary snapshot as trip exposure.
+### 0:00–0:30 — Introduction and inputs
 
-**Why not always return three routes?** The routing provider may not have three materially distinct alternatives. The app makes a bounded set of attempts, deduplicates results, and reports a shortfall.
+**Show:** Hosted URL and ready route view. Point to departure, cargo, and spacing.
 
-**Why not infer unknown weather?** Treating missing forecasts as clear weather would make incomplete routes appear safer. Missing required checkpoint forecasts exclude a route from recommendation while preserving the available information.
+> Hi, I’m Jundee. This is Wayfinder, my weather-aware truck-routing assessment. It compares the weather a truck is expected to encounter along alternative routes, then explains which route qualifies for recommendation.
+>
+> The inputs are origin, destination, departure, cargo load, and checkpoints every 10, 25, or 50 miles. Departure uses the origin’s timezone. The interface keeps weather units visible so the comparison is easy to follow.
 
-**Why are load thresholds strict?** The assessment says greater than 30,000 lb and greater than 40,000 lb. Boundary tests ensure equality does not trigger escalation.
+### 0:30–1:00 — Live evidence and demo distinction
 
-**What would production change?** Use a suitable commercial forecast/tile agreement, durable shared caching and rate limits, provider monitoring, explicit vehicle attributes, and richer trip scheduling. These are follow-on improvements, not claims about this assessment build.
+**Show:** A verified live result only if full routing works. Then show **Explore demo → Mixed conditions**, 32,000 lb, 25-mile spacing.
 
-## Submission items
+> Live mode uses TomTom for geocoding and truck routing, with Open-Meteo forecasts. The provider key stays on the server. The verification record states which live checks have passed. Live alternatives are deduplicated; if fewer than three exist, the app reports that shortfall.
+>
+> For reproducible hazards, I’m using the labeled demo: three saved OSRM driving routes with synthetic weather. These are not current forecasts or verified truck-restriction data.
+
+**Required status line if still true at recording:** “Open-Meteo responded successfully at three US locations; TomTom routing and the hosted deployment are still pending.” If this remains true, present the recording as a progress demonstration, not a finished hosted submission. Remove that line only after the corresponding checks actually pass.
+
+### 1:00–1:50 — Three routes and ranking
+
+**Click:** Each route card, then the recommended one. Point to mileage, duration, selected map line, and recommendation reason.
+
+> These cards show distance, duration, arrival, and estimated miles in each risk band. Selecting a card highlights its route and checkpoints on the map.
+>
+> A route is ineligible if any required checkpoint has No Travel conditions or an unavailable forecast. Eligible routes rank by Severe miles first, then High miles, then distance-weighted average risk, and finally travel time.
+>
+> Each checkpoint represents the road halfway toward its neighbors. Those sections add up to the complete route mileage. This avoids overcounting endpoints or averaging samples without considering distance. Travel speed alone cannot compensate for a route being ineligible under these rules.
+
+### 1:50–2:40 — Arrival weather and cargo
+
+**Click:** A rehearsed checkpoint. Point to ETA, values, risk, and reason.
+
+> This checkpoint’s forecast is matched to its estimated arrival, using cumulative travel time from the route. Wind is measured in miles per hour; rain and snow in inches per hour. The worst applicable condition sets its risk. The panel also lists which condition triggered the risk and how much road it represents.
+>
+> Cargo changes the wind rules. Wind from 45 to below 55 becomes No Travel above 30,000 pounds. Wind from 35 to below 45 becomes Severe above 40,000 pounds. Exactly those load thresholds do not trigger escalation. Wind of 55 or more means No Travel at every load.
+
+### 2:40–3:30 — Interactive forecast map
+
+**Click:** Close checkpoint; toggle **Weather layer**; move slider through +0, +24, +48; play briefly, then pause.
+
+> The corridor layer lets me inspect the weather around all routes. I can hide it, change the hour, or play the forecast.
+>
+> There are 49 hourly frames, from departure through 48 hours later. They load together, so moving the slider changes colors locally instead of fetching weather for every movement. The bounded grid reports its resolution, making its level of detail visible.
+>
+> This is a corridor snapshot at one time. Recommendations still use each checkpoint’s arrival-time weather, so scrubbing does not change the ranking.
+
+### 3:30–4:00 — No eligible route
+
+**Click:** Choose **No travel conditions**, **Every 50 mi**, then **Find safest routes**.
+
+> Here I change the checkpoint spacing and select the synthetic No Travel scenario. Every route becomes ineligible, and the app explains why rather than choosing a winner. Missing required forecasts also prevent a recommendation; they are never scored as clear weather. Origin and destination are always sampled.
+
+### 4:00–4:50 — Architecture, evidence, and limits
+
+**Show:** README architecture and current verification record; return to the working app before 4:50.
+
+> React and TypeScript handle the interface and MapLibre map. Django owns provider calls, validation, sampling, and scoring. The risk functions are separate from network calls, with tests for boundaries, arrival times, exposure totals, and ranking. The production design serves both frontend and API together from one origin.
+>
+> This record distinguishes tests, demo checks, live providers, and deployment. Weather remains sampled; vehicle dimensions and driver breaks are future improvements. The repository documents these assumptions and setup. Thank you for reviewing Wayfinder.
+
+### 4:50–5:00 — Hold the final view
+
+Leave the app, its URL, and route comparison visible while Loom reaches its five-minute stop. Do not end at 4:50, and confirm the saved recording duration before submission.
+
+## Extended version — about seven minutes
+
+Use the following sequence only if the account permits recording longer than five minutes.
+
+## 0:00–0:35 — Purpose and trip inputs
+
+**Show:** The hosted app with its URL visible. Start with the map and route comparison visible together.
+
+**Say:**
+
+> Hi, I’m Jundee. This is Wayfinder, my weather-aware truck-routing assessment. It compares routes using the weather expected when the truck reaches each checkpoint. I’ll show the route comparison, explain the risk calculation, and then demonstrate the 48-hour weather map.
+>
+> The inputs are the starting point, destination, departure, cargo load, and checkpoint spacing. Departure uses the origin’s timezone. Checkpoints can be every 10, 25, or 50 miles.
+
+## 0:35–1:30 — Live path and repeatable demo
+
+**Click:** **Live planning**. Select the verified origin and destination suggestions. Use a future departure within the next 48 hours, 32,000 lb, and **Every 25 mi**. Click **Find safest routes**. Wait for route cards and the corridor forecast.
+
+**Say only after this live request works:**
+
+> This request uses TomTom for geocoding and truck routing, and Open-Meteo for forecasts. The API key stays on the Django server. Here are the actual alternatives returned for this trip, each with its own travel time and checkpoint arrival times.
+>
+> The provider may return fewer than three distinct alternatives. The app makes bounded fallback requests and shows a warning if it still cannot find three.
+
+**Click:** **Explore demo**, choose **Mixed conditions**, keep 32,000 lb and 25-mile spacing, then click **Find safest routes**.
+
+> I’ll use the labeled demo for the hazard examples so they are reproducible. It contains three saved OSRM driving routes with synthetic weather. These are real road shapes, but the demo does not verify truck restrictions or show current forecasts.
+
+**If live verification remains unavailable:** Replace the live-success paragraph with the specific remaining limitation and demonstrate the labeled demo. Do not describe a demo-only deployment as completed live integration.
+
+## 1:30–2:30 — Three routes and recommendation
+
+**Click:** Select each of the three route cards, then return to the recommended route. Point to the selected line, duration, distance, arrival, and Severe/High mileage. Keep the recommendation explanation visible.
+
+**Say:**
+
+> Selecting a card highlights that route on the map. The cards show distance, duration, arrival, and estimated mileage in each risk band.
+>
+> First, a route is excluded if any required checkpoint has No Travel conditions or missing forecast coverage. Among eligible routes, I compare Severe miles first, then High miles, then distance-weighted average risk, and finally travel time. The quickest route is not automatically the recommendation.
+>
+> Each checkpoint represents the road halfway toward its neighbors. Those sections add up to the route’s total mileage. This avoids counting the endpoints as full intervals or simply averaging checkpoint scores.
+
+## 2:30–3:30 — Arrival-time weather and cargo rules
+
+**Click:** A checkpoint with a clear non-Low risk reason, identified during rehearsal. Point to its mile position, ETA, weather values, explanation, and represented mileage.
+
+**Say:**
+
+> This panel shows the forecast at this checkpoint’s estimated arrival, not just the weather at departure. The ETA follows the routing provider’s cumulative travel time along the route.
+>
+> Wind is in miles per hour; rain and snow are in inches per hour. The highest applicable weather risk becomes the checkpoint’s risk. The assessment also changes wind risk based on cargo.
+>
+> Wind from 45 to below 55 miles per hour becomes No Travel above 30,000 pounds. Wind from 35 to below 45 becomes Severe above 40,000 pounds. “Above” matters: exactly 30,000 or 40,000 does not trigger its corresponding load escalation. Wind of 55 or more is No Travel at every load.
+
+**Optional:** Replan with a different load only if rehearsal shows a useful change. Describe the actual result; do not promise every checkpoint changes.
+
+## 3:30–4:35 — Map and 0–48-hour forecast
+
+**Click:** Close the checkpoint panel. Toggle **Weather layer** off and on. Move **Forecast hours after departure** to +0, +24, and +48. Play briefly, then pause. Keep routes visible.
+
+**Say:**
+
+> The weather layer covers the corridor around all the routes. These colors show risk at the selected time, from departure through 48 hours later.
+>
+> The backend returns all 49 hourly frames together. Moving the slider updates the colors locally; it does not request a new forecast for every movement. The corridor grid is bounded to control provider work, and the app reports its resolution.
+>
+> This map is a snapshot of the corridor at one time. Route ranking still uses the weather at each checkpoint’s arrival. Moving the slider therefore does not change the recommendation.
+
+## 4:35–5:20 — Sampling and no eligible route
+
+**Click:** Set **Every 50 mi**, choose **No travel conditions**, and click **Find safest routes**. Point to the ineligible cards and explanation. If time permits, choose **Clear skies**, set **Every 10 mi**, and replan.
+
+**Say:**
+
+> Checkpoint spacing controls how often the route is sampled. Origin and destination are always included. Closer samples provide more detail but require more forecast work.
+>
+> In this synthetic No Travel scenario, every route is ineligible. The app explains that instead of presenting a winner. Missing required forecasts are also unavailable, rather than clear weather. The Clear skies scenario lets me check eligible-route behavior separately.
+
+## 5:20–6:20 — Architecture and verification
+
+**Show:** The public README architecture diagram, then briefly `backend/routing/domain.py` (`assess_weather` and `recommend`). Finish on current [verification evidence](VERIFICATION.md) or actual successful CI/test output for the deployed revision.
+
+**Say:**
+
+> React and TypeScript handle the form, comparison cards, and MapLibre map. Django validates input, calls providers, samples the route, and calculates risk. The production service serves both the built frontend and the API.
+>
+> Risk and ranking functions are separated from network calls so their rules can be tested directly. Tests cover threshold boundaries, strict cargo cutoffs, checkpoint timing, exposure-mile totals, missing forecasts, and recommendation order.
+>
+> This record separates automated checks, demo behavior, live provider checks, and the hosted deployment. These are the results for the version being shown.
+
+**Read only verified counts and outcomes.** Do not describe old test output as a fresh run or CI as proof of live-provider behavior. Keep credentials and provider dashboards off screen.
+
+## 6:20–7:10 — Limits and closing
+
+**Click:** Return to the hosted app. Restore **Mixed conditions**, 32,000 lb, **Every 25 mi**, then show the recommended route and a checkpoint.
+
+**Say:**
+
+> The main tradeoff is that weather is sampled at checkpoints and corridor cells. It estimates exposure between those locations. The live route uses a truck profile, but full vehicle dimensions, gross vehicle weight, and hazardous-material restrictions are not configured.
+>
+> Forecast coverage is limited by the provider’s horizon. A route arriving outside that coverage is not recommended. The app does not silently replace a failed live request with demo data.
+>
+> Further improvements would include a richer vehicle profile, driver breaks, and production monitoring. For this assessment, I focused on visible risk rules, an explainable comparison, and an interactive map. The repository includes setup instructions, assumptions, tests, and deployment details. Thank you for reviewing Wayfinder.
+
+## Useful answers if asked
+
+**Why mileage weighting?** A simple checkpoint average changes with sample density and overweights endpoints. Midpoint sections partition the route so each mile contributes once.
+
+**Why keep the slider separate from scoring?** A map at one timestamp and weather encountered during a moving trip answer different questions. Route scoring follows each arrival time.
+
+**Why not guarantee three live routes?** Some trips have fewer materially different alternatives. The app deduplicates results and reports a shortfall instead of presenting duplicates as different routes.
+
+**What happens when weather is missing?** The checkpoint is Unknown. A route with missing required forecasts is ineligible, and its average risk is unavailable rather than zero.
+
+**What did you use to build it?** Describe the tools and assistance you actually used and the parts you can explain. Do not claim unaided implementation, work hours, or live checks that are not true.
+
+## Submission links
 
 - Public repository: [xdeelord24/wayfinder-weather-routing](https://github.com/xdeelord24/wayfinder-weather-routing).
-- Hosted application URL: deployment deferred at the user's request.
-- Loom recording URL: pending recording with your narration and account.
+- Hosted application: **Pending verified public URL**.
+- Loom walkthrough: **Pending recording and playback check**.
+
+Submission is complete only when the receiving form shows success or Spotter sends a receipt. A recording, saved form, or clicked button alone does not prove receipt.

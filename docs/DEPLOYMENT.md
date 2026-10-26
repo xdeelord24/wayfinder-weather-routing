@@ -4,7 +4,7 @@ Wayfinder is packaged as one Docker web service: the frontend builds during imag
 
 Deployment status is tracked in [VERIFICATION.md](VERIFICATION.md). The presence of a Dockerfile or Render configuration does not mean a deployment exists.
 
-Hosted deployment is currently deferred at the user's request. These instructions remain available for a later deployment; the current delivery focuses on the local demo.
+Hosted deployment was authorized on October 26, 2026 and is being prepared. The local application and live weather checks have passed; Render account access and a server-side TomTom key are the outstanding setup steps. A public application URL has not yet been verified.
 
 ## Prepare the repository
 
@@ -54,6 +54,6 @@ The frontend's map settings are embedded at build time. For Docker builds, pass 
 
 ## Submit
 
-Provide the public repository URL, verified hosted URL, and a 5–10 minute Loom recording. [WALKTHROUGH.md](WALKTHROUGH.md) contains a seven-minute script. Use your own narration and Loom account, and distinguish fixture demonstrations from live provider evidence.
+Provide the public repository URL, verified hosted URL, and a 5–10 minute Loom recording. [WALKTHROUGH.md](WALKTHROUGH.md) contains the narration and click sequence, and [RECORDING_CHECKLIST.md](RECORDING_CHECKLIST.md) covers preparation and review. Check the account's recording limit before starting: Loom Starter allows five minutes per recording. Use your own narration and distinguish fixture demonstrations from live provider evidence.
 
 If deployment or live access has not been completed, label it pending and provide the local setup instructions. Do not describe local execution as a hosted application.

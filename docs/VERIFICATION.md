@@ -2,9 +2,18 @@
 
 This record distinguishes implementation checks, fixture demonstrations, live providers, and deployment. **Pending means no verified result has been recorded.** Source inspection, tests, and a successful build do not establish live provider or hosted-site behavior.
 
-The user chose to continue with the demo. Live TomTom verification and hosted deployment are **deferred by request**, rather than prerequisites for the current delivery.
+Live API verification and deployment work resumed with user authorization on **October 26, 2026**. Open-Meteo checks passed. TomTom routing requires the server-side key, and a public deployment and recording have not yet been verified.
 
-Recorded checks below were performed on **October 24, 2026, Asia/Manila** (October 23 UTC). The demo uses saved OSRM/OpenStreetMap driving geometry and synthetic weather; these results do not certify live truck routing.
+The original checks below were performed on **October 24, 2026, Asia/Manila** (October 23 UTC); the October 26 recheck is recorded separately below. The demo uses saved OSRM/OpenStreetMap driving geometry and synthetic weather; demo results do not certify live truck routing.
+
+## October 26 pre-deployment check
+
+- Re-ran all **32 backend tests** and **15 frontend tests**: passed.
+- Re-ran TypeScript checking and Vite production build: passed. Vite still reports the existing large MapLibre chunk warning; this is a build-size warning, not a failed build.
+- Live Open-Meteo check passed at **00:32:42–00:32:45 UTC** (08:32 Asia/Manila), using two HTTP requests. Three actual US coordinates had complete weather at departure, +1, +24, and +48 hours, with no warnings. These are weather probes, not claimed truck-route checkpoints.
+- The provider's HTTP Date was **26 October 2026 00:32:46 UTC**, and current-weather time was 00:30 UTC, corroborating the execution clock.
+- Command: `.venv\Scripts\python.exe scripts/verify_live.py`. Local evidence: `output/live-verification/20261026T003242Z-weather.json` (excluded from Git).
+- Full routing check command, once configured: `.venv\Scripts\python.exe scripts/verify_live.py --live-plan`. Hosted HTTP/browser behavior still requires separate checks.
 
 ## Automated checks
 
@@ -44,14 +53,14 @@ Final desktop/mobile checks reported **zero page errors, zero console errors, an
 
 | Check | Status | Evidence to record |
 | --- | --- | --- |
-| Live TomTom location search and truck routing | Deferred by request | Resume with a server-side key; record actual trip, UTC timestamp, and distinct route count. |
-| Live Open-Meteo checkpoint forecasts | Deferred with live mode | Later record request time, returned forecast range, and sample unit/arrival-time comparison. |
-| Live three-route example | Deferred by request | Later record origin, destination, departure, cargo, spacing, and distinct alternatives. |
-| Hosted frontend and `/api/health` | Deferred by request | Later record public URL, deployment revision, and check time. |
-| Hosted live planning and corridor request | Deferred by request | Later record successful live request plus visible route and corridor results. |
+| Live TomTom location search and truck routing | Pending server-side key | Record actual trip, UTC timestamp, and distinct route count after live execution. |
+| Live Open-Meteo forecasts at actual coordinates | Passed October 26 | Three US coordinates, four requested times through +48 hours, no warnings; evidence above. Route-checkpoint integration remains pending TomTom. |
+| Live three-route example | Pending | Record origin, destination, departure, cargo, spacing, and distinct alternatives. |
+| Hosted frontend and `/api/health` | Pending Render account access | Record public URL, deployment revision, and check time. |
+| Hosted live planning and corridor request | Pending deployment and key | Record successful live request plus visible route and corridor results. |
 | Public repository | Verified public | [xdeelord24/wayfinder-weather-routing](https://github.com/xdeelord24/wayfinder-weather-routing), branch `main`; initial published revision `a31400fe4fa33e78c64267e76e6676f5f8b5c166`. A 53-file staged scan excluded the assessment PDF and `.env` and found no actual secret. |
 | Loom walkthrough | Pending | Recording URL; verify narration and coverage. |
 
 ## Evidence notes
 
-Browser screenshots are stored locally in `output/playwright/`, which is excluded from Git; the selected repository preview is [assets/demo-preview.png](assets/demo-preview.png). The repository is public and revision `cb8ae01` passed CI, including the container HTML/assets checks. Live-provider, hosted-site, and recording completion have not been asserted. Subsequent documentation-only commits do not change the verified application or workflow.
+Browser screenshots are stored locally in `output/playwright/`, which is excluded from Git; the selected repository preview is [assets/demo-preview.png](assets/demo-preview.png). The repository is public and revision `cb8ae01` passed CI, including the container HTML/assets checks. Live Open-Meteo results are recorded separately above; TomTom, hosted-site, and recording completion have not been asserted. Documentation and verification-script changes do not change the application runtime.
