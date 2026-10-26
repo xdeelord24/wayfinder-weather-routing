@@ -1,17 +1,21 @@
 # Spotter walkthrough: five-minute and seven-minute options
 
+**Delivered video:** [Public Loom walkthrough — 6:34](https://www.loom.com/share/c3514d7c216f4ae8b1d43d06f0c0fea8). **Submission confirmed:** October 26, 2026, approximately 10:59 AM Asia/Manila; Spotter's thank-you page acknowledged receiving the answers.
+
+The sequences below remain reusable rehearsal guides. See [VERIFICATION.md](VERIFICATION.md) for the submitted recording's review scope and the clarification accompanying its No Travel segment.
+
 Record with your own voice. Use this as a speaking guide, with your usual wording and pauses while the app responds. The assessment requests **5–10 minutes**. Use the **exactly-five-minute option for Loom Starter**, or aim for 7–8 minutes if the account permits longer recording. Spend most of the video on route logic and the interactive map; those make up 80% of the rubric. Keep the code tour short.
 
-Prepare with [RECORDING_CHECKLIST.md](RECORDING_CHECKLIST.md). Replace the evidence fields below before recording; a placeholder is not a completed check.
+For another recording, prepare with [RECORDING_CHECKLIST.md](RECORDING_CHECKLIST.md) and refresh time-sensitive evidence below.
 
 | Recording fact | Verified result |
 | --- | --- |
 | Hosted URL | [xdeelord.pythonanywhere.com](https://xdeelord.pythonanywhere.com/) — **ready for recording** on a free PythonAnywhere Beginner account. Hosted live API, demo, and asset checks passed; visible demo map/checkpoint/slider checks passed. |
 | Live example | Chicago → Detroit; 32,000 lb; 50-mile spacing; departure `2026-10-26T01:45:46Z`. Three distinct routes: 282.92, 305.20, and 334.85 miles. Use a new future departure when recording. |
 | Live check time | **Passed 26 October 2026, 08:45 Manila** (00:45 UTC): live adapters/services; hosted HTTP and browser verification remain separate. |
-| Deployment revision | Runtime baseline `20b2528`, followed by the October 26 map-tile referrer-policy correction; see [VERIFICATION.md](VERIFICATION.md) for the final revision/evidence record. |
+| Deployment revision | Submitted runtime [`fbd195f091cf9359eb160e90db30d3c21bab1dda`](https://github.com/xdeelord24/wayfinder-weather-routing/commit/fbd195f091cf9359eb160e90db30d3c21bab1dda), including the map-tile referrer-policy correction. |
 | Live weather and corridor | All 23 checkpoint forecasts available; 154 corridor cells × 49 frames; zero unknown cell-hours. All sampled route weather was Low risk, and `route-1` was recommended. |
-| Test evidence | [CI run 40250357867](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/40250357867) passed at `20b2528`: 47 tests, frontend build, Docker build, and container frontend/API smoke. This does not verify a public hosted site. |
+| Test evidence | [CI run 40252769723](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/40252769723) passed at `fbd195f`: 47 tests, frontend build, Docker build, and container frontend/API smoke. Hosted verification is recorded separately. |
 | Preliminary weather check | Open-Meteo responded at three US locations on 2026-10-26 at 00:32 UTC (08:32 Manila). This does not establish TomTom routing or hosted deployment. |
 | Hosted live check | **Passed 09:00 Manila, 26 October:** six HTTP 200 responses, three distinct live routes, 23 complete checkpoint forecasts, 154 cells × 49 frames, zero unknown cell-hours. |
 | Hosted demo and assets | All three scenarios passed with 192 cells × 49 frames. Hosted smoke checks passed again after the map-tile correction. |
@@ -21,7 +25,7 @@ The live evidence is recorded locally in `output/live-verification/20261026T0045
 
 Hosted evidence is recorded separately in `output/live-verification/20261026T010039Z-hosted.json` and `output/live-verification/20261026T0100Z-hosted-demo-smoke.json`. A visible road-tile issue was fixed by setting `SECURE_REFERRER_POLICY` to `strict-origin-when-cross-origin`; the hosted header and visible tiles were rechecked, all 32 backend tests passed, and hosted smoke checks passed after the fix. There is no need to spend recording time on this implementation detail unless asked.
 
-Loom is signed in to the **jgmolinawork** workspace and displayed a **14-day trial** on 26 October. Check the recorder's actual duration allowance before choosing a version. The browser security policy blocked automated use of the recording button; **click “Record a video” yourself directly in Loom**. No recording has been completed by these checks.
+For future recordings, check the recorder's current duration allowance before choosing a version and **click “Record a video” yourself directly in Loom**. Use your own narration and verify the saved recording rather than assuming the rehearsal timing matches it.
 
 ## Set up the hosted recording
 
@@ -31,7 +35,7 @@ Keep the actual hosted URL visible at the opening and closing. Hosted live HTTP 
 
 ## Five-minute version for Loom Starter
 
-Loom Starter stops recording at **5:00**, which is also the assessment's minimum duration. Use this compact version if the recorder shows that limit. Finish speaking by **4:50**, leave the final app view visible, and let the recorder reach **5:00**. Check the saved duration and do not trim it below five minutes. A trial was visible, but the recorder's actual allowance still needs checking; do not buy an upgrade for this script. [Loom recording limits](https://support.atlassian.com/loom/docs/how-long-can-i-record/).
+Loom Starter stops recording at **5:00**, which is also the assessment's minimum duration. Use this compact version if the recorder shows that limit. Finish speaking by **4:50**, leave the final app view visible, and let the recorder reach **5:00**. Check the saved duration and do not trim it below five minutes. Confirm the current account allowance; no upgrade is needed to use this compact script. [Loom recording limits](https://support.atlassian.com/loom/docs/how-long-can-i-record/).
 
 The main narration below is approximately 540 words. Practice it once with a timer, speaking naturally while performing the actions. Have results loaded before recording so provider wait time does not consume the five-minute take.
 
@@ -223,7 +227,7 @@ Use the following sequence only if the account permits recording longer than fiv
 
 - Public repository: [xdeelord24/wayfinder-weather-routing](https://github.com/xdeelord24/wayfinder-weather-routing).
 - Hosted application: [xdeelord.pythonanywhere.com](https://xdeelord.pythonanywhere.com/) — live, with hosted API/demo/assets and visible demo-map checks passed.
-- Loom walkthrough: **Pending recording and playback check**.
-- Assessment submission: **Pending the Loom URL and a confirmed submission receipt**.
+- Loom walkthrough: [Public recording — 6:34](https://www.loom.com/share/c3514d7c216f4ae8b1d43d06f0c0fea8), reviewed through transcript and sampled frames, with the disclosed scenario mismatch noted above.
+- Assessment submission: **Receipt confirmed October 26, 2026, approximately 10:59 AM Asia/Manila**, through Spotter's thank-you page.
 
-Submission is complete only when the receiving form shows success or Spotter sends a receipt. A recording, saved form, or clicked button alone does not prove receipt.
+For any future submission, retain the receiving form's success message or employer receipt; a recording, saved form, or clicked button alone does not prove receipt.

@@ -6,7 +6,9 @@ Weather-aware truck route planning for the United States. Compare route alternat
 
 Built with React, TypeScript, Vite, MapLibre GL, Django, and Django REST Framework. Live routing and geocoding use TomTom; forecasts use Open-Meteo.
 
-[Open the hosted application](https://xdeelord.pythonanywhere.com) · [Public repository](https://github.com/xdeelord24/wayfinder-weather-routing)
+[Open the hosted application](https://xdeelord.pythonanywhere.com) · [Public repository](https://github.com/xdeelord24/wayfinder-weather-routing) · [Watch the 6:34 walkthrough](https://www.loom.com/share/c3514d7c216f4ae8b1d43d06f0c0fea8)
+
+**Assessment submitted:** Spotter acknowledged receipt of the repository, hosted application, and public Loom recording on **October 26, 2026, at approximately 10:59 AM Asia/Manila**. See [the verification record](docs/VERIFICATION.md) for evidence and the walkthrough clarification.
 
 ## Try it
 
@@ -14,7 +16,9 @@ The application includes a clearly labeled **Chicago → Detroit demo** with thr
 
 The hosted application has live routing configured. Select real origin and destination suggestions, enter a departure within the next 48 hours, and choose a cargo load and checkpoint spacing of 10, 25, or 50 miles. The default spacing is 25 miles. Departure is interpreted in the origin's displayed timezone. For a local live setup, configure `TOMTOM_API_KEY` on the backend.
 
-Hosted HTTP verification passed on October 26, 2026 at **09:00 Asia/Manila**: three distinct live Chicago–Detroit truck routes, 23 complete arrival-time checkpoint forecasts, and a 154-cell corridor with all 49 hourly frames. The hosted JavaScript/CSS assets and mixed, clear, and blocked demo scenarios also passed. After correcting the map's referrer policy, hosted desktop checks verified real map tiles, route/heatmap rendering, a checkpoint popup, and +0/+24/+48-hour slider controls. Mobile checks remain the October 24 local results below. The application runs on PythonAnywhere with Python 3.12 and one WSGI worker; its current free-site expiry is November 26, 2026 and requires manual monthly renewal. The Loom recording is pending. Current evidence is recorded in [docs/VERIFICATION.md](docs/VERIFICATION.md). Deployment instructions and recording scripts are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md).
+Hosted HTTP verification passed on October 26, 2026 at **09:00 Asia/Manila**: three distinct live Chicago–Detroit truck routes, 23 complete arrival-time checkpoint forecasts, and a 154-cell corridor with all 49 hourly frames. The hosted JavaScript/CSS assets and mixed, clear, and blocked demo scenarios also passed. After correcting the map's referrer policy, hosted desktop checks verified real map tiles, route/heatmap rendering, a checkpoint popup, and +0/+24/+48-hour slider controls. Mobile checks remain the October 24 local results below. The application runs on PythonAnywhere with Python 3.12 and one WSGI worker; its current free-site expiry is November 26, 2026 and requires manual monthly renewal. Current evidence is recorded in [docs/VERIFICATION.md](docs/VERIFICATION.md). Deployment instructions and reusable recording scripts are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md).
+
+The submitted application runtime is revision [`fbd195f`](https://github.com/xdeelord24/wayfinder-weather-routing/commit/fbd195f091cf9359eb160e90db30d3c21bab1dda). [CI run 40252769723](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/40252769723) passed all **47 tests**, frontend build, Docker build, and container frontend/API smoke checks.
 
 Verified on October 24, 2026 (Asia/Manila): **32 backend tests, 15 frontend tests, production build, all three demo scenarios over HTTP, and desktop/mobile browser checks passed**. All 49 forecast positions preserve the map and recommendation without additional API requests. [The successful CI run](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/39989567538) also passed its Docker build and Gunicorn-container frontend/API smoke check; see the evidence record for revision-specific scope.
 
@@ -132,7 +136,7 @@ npm.cmd run build
 
 The HTTP smoke script exercises mixed/25-mile, clear/10-mile, and blocked/50-mile scenarios, checking corridor size/frame count, total exposure mileage, final arrival, and moving weather fronts. Pass an optional base URL to test another port: `.venv\Scripts\python.exe scripts/smoke.py http://127.0.0.1:8001`. Add `--frontend` when the backend serves the built frontend to check the HTML title and JavaScript/CSS entry assets, including response types and content.
 
-GitHub Actions runs backend tests/checks, frontend tests/build, static collection, a Docker image build, and the HTTP smoke test against the container. Revision `cb8ae01` passed all checks, including `--frontend` verification of the served HTML and JavaScript/CSS entry assets.
+GitHub Actions runs backend tests/checks, frontend tests/build, static collection, a Docker image build, and the HTTP smoke test against the container. Submitted runtime revision `fbd195f091cf9359eb160e90db30d3c21bab1dda` passed [run 40252769723](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/40252769723), including all 47 tests and `--frontend` verification of the served HTML and JavaScript/CSS entry assets.
 
 See [the verification record](docs/VERIFICATION.md) for commands actually run, results, and remaining live checks. Passing fixture tests does not establish that external providers or a hosted deployment work.
 

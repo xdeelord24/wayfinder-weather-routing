@@ -2,7 +2,16 @@
 
 This record distinguishes implementation checks, fixture demonstrations, live providers, and deployment. **Pending means no verified result has been recorded.** Source inspection, tests, and a successful build do not establish live provider or hosted-site behavior.
 
-Live API verification and deployment work resumed with user authorization on **October 26, 2026**. Full TomTom and Open-Meteo service checks passed, followed by hosted HTTP verification at [xdeelord.pythonanywhere.com](https://xdeelord.pythonanywhere.com). A map-tile referrer-policy issue found during visible checking was corrected, regression-tested, deployed, and verified in the hosted desktop demonstration. Mobile results remain the historical local checks. The Loom recording remains pending.
+Live API verification and deployment work resumed with user authorization on **October 26, 2026**. Full TomTom and Open-Meteo service checks passed, followed by hosted HTTP verification at [xdeelord.pythonanywhere.com](https://xdeelord.pythonanywhere.com). A map-tile referrer-policy issue found during visible checking was corrected, regression-tested, deployed, and verified in the hosted desktop demonstration. Mobile results remain the historical local checks. The **6:34 Loom walkthrough is public**, and Spotter's confirmation page acknowledged receipt of the assessment at approximately **10:59 AM Asia/Manila on October 26**.
+
+## Delivered runtime and recording
+
+- **Runtime:** [`fbd195f091cf9359eb160e90db30d3c21bab1dda`](https://github.com/xdeelord24/wayfinder-weather-routing/commit/fbd195f091cf9359eb160e90db30d3c21bab1dda), including the map-tile referrer-policy correction.
+- **CI:** [run 40252769723](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/40252769723) passed all 47 tests, frontend build, Docker build, and container frontend/API smoke checks.
+- **Walkthrough:** [Public Loom video, 6 minutes 34 seconds](https://www.loom.com/share/c3514d7c216f4ae8b1d43d06f0c0fea8), within the requested 5–10 minutes. Loom's Share dialog showed **Public — Anyone can find and view**.
+- **Recording review scope:** playback, transcript, and sampled video frames were viewed in the signed-in session. Anonymous-browser playback and full audio quality were not independently reviewed; this does not certify every spoken statement or frame.
+- **Recording clarification:** from approximately **4:58 to 5:19**, the narration describes No Travel conditions while the screen still shows Mixed conditions. This mismatch was disclosed alongside the Loom link in Spotter's submission form. The actual blocked scenario independently passed hosted smoke verification and returned no recommendation.
+- **Submission:** confirmed on October 26, 2026, at approximately **10:59 AM Asia/Manila**. Spotter's thank-you page explicitly acknowledged receiving the answers.
 
 The original checks below were performed on **October 24, 2026, Asia/Manila** (October 23 UTC); the October 26 recheck is recorded separately below. The demo uses saved OSRM/OpenStreetMap driving geometry and synthetic weather; demo results do not certify live truck routing.
 
@@ -37,7 +46,7 @@ No application fix was needed for this local service check. It verifies the actu
 
 **URL:** [https://xdeelord.pythonanywhere.com](https://xdeelord.pythonanywhere.com). PythonAnywhere runs Python 3.12 with one WSGI worker from `/home/xdeelord/wayfinder`. Production settings use `DJANGO_DEBUG=false`, the exact public hostname, and a private `.env` with permissions `600`; `manage.py check` passed. Disk usage was approximately 218 MiB by `du`, with about 230 MB reported against the 512 MB quota. The free web app's current expiry is November 26, 2026; monthly manual renewal is required.
 
-The initial `wayfinder-pythonanywhere-20261026T004930Z.zip` bundle used application runtime from revision `20b2528`. It included 22 runtime/build files, with credentials and the supplied assessment excluded. The hosted map correction described below is a subsequent runtime settings change.
+The initial `wayfinder-pythonanywhere-20261026T004930Z.zip` bundle used application runtime from revision `20b2528`. It included 22 runtime/build files, with credentials and the supplied assessment excluded. The hosted map correction described below is included in the final submitted runtime revision `fbd195f091cf9359eb160e90db30d3c21bab1dda`.
 
 Command: `.venv\Scripts\python.exe scripts/verify_hosted.py https://xdeelord.pythonanywhere.com`. Ran **01:00:39–01:00:50 UTC / 09:00 Asia/Manila**. Credential-free local evidence: `output/live-verification/20261026T010039Z-hosted.json`.
 
@@ -77,8 +86,8 @@ Visible desktop checks confirmed real OpenStreetMap tiles with routes and heatma
 | Local frontend and API on one origin | Passed | Built frontend served by Django with `DJANGO_DEBUG=false` at `http://127.0.0.1:8001`; smoke `--frontend` verified HTTP 200 HTML/title and both JavaScript/CSS entry assets with their response types/content. |
 | Desktop browser workflow | Passed for recorded scenarios | Final Playwright check at 1440×1000; earlier 1280×720 check also exercised clear/blocked flows and 10-mile selection. |
 | Mobile browser workflow | Passed for recorded scenarios | Playwright at 390×844: no horizontal page overflow, recommended route first, route/checkpoint selection, and demo/live mode transitions. |
-| Docker image and container startup | Passed | CI built the image, started Gunicorn, and passed the demo API smoke test against the container at revision `cb8ae01`. |
-| GitHub Actions run | Passed | [Successful run 39989567538](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/39989567538): 47 tests, frontend build, Django check/static collection, Docker build, and container frontend/API smoke. |
+| Docker image and container startup | Passed | Final runtime CI built the image, started Gunicorn, and passed container frontend/API smoke at revision `fbd195f`. |
+| GitHub Actions run | Passed | [Final runtime run 40252769723](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/40252769723): 47 tests, frontend build, Docker build, and container frontend/API smoke. |
 | Container HTML/assets smoke extension | Passed | The `--frontend` assertions verified HTTP 200 HTML/title and two JavaScript/CSS entry assets with correct response types and nonempty content, both locally and in the CI container. |
 
 ## Scenario evidence
@@ -101,7 +110,7 @@ Final desktop/mobile checks reported **zero page errors, zero console errors, an
 
 ## Live and submission checks
 
-| Check | Status | Evidence to record |
+| Check | Status | Evidence |
 | --- | --- | --- |
 | Live TomTom location search and truck routing | Passed October 26 | Real Chicago–Detroit request returned three distinct alternatives; details above. |
 | Live Open-Meteo forecasts | Passed October 26 | Three-coordinate weather probe, then all 23 live route checkpoints and 154 × 49 corridor values complete. |
@@ -111,8 +120,9 @@ Final desktop/mobile checks reported **zero page errors, zero console errors, an
 | Hosted visible desktop demo | Passed October 26 | Corrected map tiles, routes/heatmap, mile-125 Severe popup, and actual +0/+24/+48-hour slider controls verified. |
 | Hosted mobile UI | Not rechecked | October 24 mobile evidence is local; it is not a fresh hosted mobile run. |
 | Public repository | Verified public | [xdeelord24/wayfinder-weather-routing](https://github.com/xdeelord24/wayfinder-weather-routing), branch `main`; initial published revision `a31400fe4fa33e78c64267e76e6676f5f8b5c166`. A 53-file staged scan excluded the assessment PDF and `.env` and found no actual secret. |
-| Loom walkthrough | Pending | Recording URL; verify narration and coverage. |
+| Loom walkthrough | Recorded and public | [6:34 video](https://www.loom.com/share/c3514d7c216f4ae8b1d43d06f0c0fea8); transcript and sampled frames reviewed, with the 4:58–5:19 clarification disclosed above. No full audio-quality review claimed. |
+| Assessment submission | Receipt confirmed October 26 | Approximately 10:59 AM Asia/Manila; Spotter's thank-you page explicitly acknowledged receiving the submitted answers. |
 
 ## Evidence notes
 
-Historical browser screenshots are stored locally in `output/playwright/`; the new hosted screenshot and HTTP evidence are under `output/live-verification/`. Both directories are excluded from Git; the selected repository preview is [assets/demo-preview.png](assets/demo-preview.png). The repository is public and revision `20b2528` passed CI, including the container HTML/assets checks. The later referrer-policy correction passed local backend tests, hosted HTTP/header checks, and the recorded desktop demonstration. The Loom recording and final assessment submission have not been confirmed.
+Historical browser screenshots are stored locally in `output/playwright/`; the new hosted screenshot and HTTP evidence are under `output/live-verification/`. Both directories are excluded from Git; the selected repository preview is [assets/demo-preview.png](assets/demo-preview.png). The repository is public and final runtime revision `fbd195f` passed CI, including container HTML/assets checks. The referrer-policy correction also passed local backend tests, hosted HTTP/header checks, and the recorded desktop demonstration. The public Loom recording and final assessment receipt are confirmed with the review limits and clarification recorded above. Historical results retain their original timestamps and scope.

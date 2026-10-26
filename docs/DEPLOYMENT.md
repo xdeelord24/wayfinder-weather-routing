@@ -2,13 +2,15 @@
 
 **Hosted application:** [https://xdeelord.pythonanywhere.com](https://xdeelord.pythonanywhere.com).
 
-Wayfinder was deployed on October 26, 2026 using PythonAnywhere, Python 3.12, and one WSGI worker. The public health endpoint, live routing/weather, frontend assets, and demo HTTP scenarios passed verification. A map-tile referrer-policy issue found during browser checking was corrected and verified on the host: real tiles, routes, heatmap, checkpoint details, and the +0/+24/+48-hour controls rendered correctly in the desktop demonstration. Mobile verification is still the historical local check. The Loom recording is pending. See [VERIFICATION.md](VERIFICATION.md) for the evidence and scope.
+Wayfinder was deployed on October 26, 2026 using PythonAnywhere, Python 3.12, and one WSGI worker. The public health endpoint, live routing/weather, frontend assets, and demo HTTP scenarios passed verification. A map-tile referrer-policy issue found during browser checking was corrected and verified on the host: real tiles, routes, heatmap, checkpoint details, and the +0/+24/+48-hour controls rendered correctly in the desktop demonstration. Mobile verification is still the historical local check. The [public 6:34 Loom walkthrough](https://www.loom.com/share/c3514d7c216f4ae8b1d43d06f0c0fea8) was submitted, and Spotter acknowledged receipt on October 26 at approximately 10:59 AM Asia/Manila. See [VERIFICATION.md](VERIFICATION.md) for evidence, recording review limits, and the disclosed scenario mismatch.
+
+**Submitted runtime:** [`fbd195f091cf9359eb160e90db30d3c21bab1dda`](https://github.com/xdeelord24/wayfinder-weather-routing/commit/fbd195f091cf9359eb160e90db30d3c21bab1dda). [CI run 40252769723](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/40252769723) passed all 47 tests, frontend build, Docker build, and container frontend/API smoke.
 
 The free web app currently expires on **November 26, 2026** and requires manual monthly renewal from the account. Keep the site renewed while it is under review.
 
 ## PythonAnywhere deployment
 
-The deployed project is `/home/xdeelord/wayfinder`. Initial bundle `wayfinder-pythonanywhere-20261026T004930Z.zip` contained the runtime from revision `20b2528`, built frontend, requirements, and WSGI template. It has 22 files and expands to about 2.31 MB; credentials, the assessment PDF, tests, virtualenvs, and local evidence are excluded. The deployed settings now include `SECURE_REFERRER_POLICY="strict-origin-when-cross-origin"` so cross-origin OpenStreetMap tile requests retain an origin referrer. Local and hosted settings hashes match. Regenerate the bundle before another deployment to include that correction.
+The deployed project is `/home/xdeelord/wayfinder`. Initial bundle `wayfinder-pythonanywhere-20261026T004930Z.zip` contained the runtime from revision `20b2528`, built frontend, requirements, and WSGI template. It has 22 files and expands to about 2.31 MB; credentials, the assessment PDF, tests, virtualenvs, and local evidence are excluded. The deployed settings now include `SECURE_REFERRER_POLICY="strict-origin-when-cross-origin"` so cross-origin OpenStreetMap tile requests retain an origin referrer. Local and hosted settings hashes match. The submitted runtime including this correction is revision `fbd195f091cf9359eb160e90db30d3c21bab1dda`; regenerate the bundle from that revision or a verified successor before another deployment.
 
 Disk use after installation was approximately **218 MiB according to `du`**, while the dashboard reported about **230 MB of its 512 MB quota**. These are deployment-time observations. Avoid pip caches and duplicate environments.
 
@@ -70,8 +72,10 @@ The frontend's map settings are embedded at build time. For Docker builds, pass 
 - Missing keys and provider failures produce clear errors without exposing secrets or silently switching to the demo.
 - Browser network requests contain no TomTom key; production Django debug output is disabled.
 
-## Submit
+## Completed submission and reusable guidance
 
-Provide the [public repository](https://github.com/xdeelord24/wayfinder-weather-routing), [hosted application](https://xdeelord.pythonanywhere.com), and a 5–10 minute Loom recording. [WALKTHROUGH.md](WALKTHROUGH.md) contains the narration and click sequence, and [RECORDING_CHECKLIST.md](RECORDING_CHECKLIST.md) covers preparation and review. Check the account's recording limit before starting; use your own narration and distinguish synthetic demonstrations from live provider observations.
+The submitted links are the [public repository](https://github.com/xdeelord24/wayfinder-weather-routing), [hosted application](https://xdeelord.pythonanywhere.com), and [public 6:34 Loom recording](https://www.loom.com/share/c3514d7c216f4ae8b1d43d06f0c0fea8). Spotter's thank-you page explicitly confirmed receipt at approximately **10:59 AM Asia/Manila on October 26, 2026**.
 
-The recording and final assessment-submission confirmation remain pending. Hosting completion alone is not evidence of submission to the employer.
+The recording review and clarification accompanying the submission are recorded in [VERIFICATION.md](VERIFICATION.md).
+
+[WALKTHROUGH.md](WALKTHROUGH.md) and [RECORDING_CHECKLIST.md](RECORDING_CHECKLIST.md) remain reusable recording guides, not a checklist asserted to have been completed in every detail. For future recordings, check the account's recording limit, use your own narration, distinguish demo data from live observations, and verify the final receiving confirmation.
