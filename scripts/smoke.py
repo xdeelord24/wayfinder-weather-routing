@@ -21,6 +21,7 @@ def check_frontend():
     with urllib.request.urlopen(BASE_URL + "/", timeout=15) as response:
         html = response.read().decode()
         assert response.status == 200 and "Wayfinder" in html
+        assert response.headers.get("Referrer-Policy") == "strict-origin-when-cross-origin", "Map tiles need the site's origin Referer without sharing URL paths or queries"
     assets = set(re.findall(r'(?:src|href)="(/assets/[^" ]+\.(?:js|css))"', html))
     assert any(path.endswith(".js") for path in assets)
     assert any(path.endswith(".css") for path in assets)

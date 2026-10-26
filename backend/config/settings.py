@@ -52,6 +52,8 @@ STORAGES = {"staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFiles
 WHITENOISE_ROOT = FRONTEND_DIST
 WHITENOISE_INDEX_FILE = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+# OSM requires the website's Referer; cross-origin requests share only the origin.
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 DATA_UPLOAD_MAX_MEMORY_SIZE = 128 * 1024
 LOGGING = {

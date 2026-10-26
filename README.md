@@ -6,15 +6,15 @@ Weather-aware truck route planning for the United States. Compare route alternat
 
 Built with React, TypeScript, Vite, MapLibre GL, Django, and Django REST Framework. Live routing and geocoding use TomTom; forecasts use Open-Meteo.
 
-[Public repository](https://github.com/xdeelord24/wayfinder-weather-routing)
+[Open the hosted application](https://xdeelord.pythonanywhere.com) · [Public repository](https://github.com/xdeelord24/wayfinder-weather-routing)
 
 ## Try it
 
 The application includes a clearly labeled **Chicago → Detroit demo** with three saved OSRM driving routes and synthetic weather. Route geometry and travel-time data were captured on October 23, 2026 UTC; no OSRM requests run while using the app. Choose Mixed conditions, Clear skies, or No travel conditions for repeatable examples. It works without a TomTom key. Demo results are not current forecasts, and the saved driving routes do not verify truck restrictions.
 
-For live trips, configure `TOMTOM_API_KEY`, select real origin and destination suggestions, enter a departure within the next 48 hours, and choose a cargo load and checkpoint spacing of 10, 25, or 50 miles. The default spacing is 25 miles. Departure is interpreted in the origin's displayed timezone.
+The hosted application has live routing configured. Select real origin and destination suggestions, enter a departure within the next 48 hours, and choose a cargo load and checkpoint spacing of 10, 25, or 50 miles. The default spacing is 25 miles. Departure is interpreted in the origin's displayed timezone. For a local live setup, configure `TOMTOM_API_KEY` on the backend.
 
-Live verification and deployment preparation resumed on October 26, 2026. Real Open-Meteo forecasts passed bounded checks at three US coordinates through 48 hours. TomTom routing still needs a configured server-side key; hosted deployment and the Loom recording remain pending. Current evidence is recorded in [docs/VERIFICATION.md](docs/VERIFICATION.md). Deployment instructions and recording scripts are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md).
+Hosted HTTP verification passed on October 26, 2026 at **09:00 Asia/Manila**: three distinct live Chicago–Detroit truck routes, 23 complete arrival-time checkpoint forecasts, and a 154-cell corridor with all 49 hourly frames. The hosted JavaScript/CSS assets and mixed, clear, and blocked demo scenarios also passed. After correcting the map's referrer policy, hosted desktop checks verified real map tiles, route/heatmap rendering, a checkpoint popup, and +0/+24/+48-hour slider controls. Mobile checks remain the October 24 local results below. The application runs on PythonAnywhere with Python 3.12 and one WSGI worker; its current free-site expiry is November 26, 2026 and requires manual monthly renewal. The Loom recording is pending. Current evidence is recorded in [docs/VERIFICATION.md](docs/VERIFICATION.md). Deployment instructions and recording scripts are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md).
 
 Verified on October 24, 2026 (Asia/Manila): **32 backend tests, 15 frontend tests, production build, all three demo scenarios over HTTP, and desktop/mobile browser checks passed**. All 49 forecast positions preserve the map and recommendation without additional API requests. [The successful CI run](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/39989567538) also passed its Docker build and Gunicorn-container frontend/API smoke check; see the evidence record for revision-specific scope.
 

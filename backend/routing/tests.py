@@ -190,6 +190,7 @@ class APITests(SimpleTestCase):
         response = self.client.get("/api/health")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["status"], "ok")
+        self.assertEqual(response["Referrer-Policy"], "strict-origin-when-cross-origin")
         response = self.client.get("/api/locations", {"q": "Chicago", "mode": "demo"})
         self.assertEqual(response.json()["locations"][0]["timezone"], "America/Chicago")
 

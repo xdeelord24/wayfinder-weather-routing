@@ -6,16 +6,32 @@ Prepare with [RECORDING_CHECKLIST.md](RECORDING_CHECKLIST.md). Replace the evide
 
 | Recording fact | Verified result |
 | --- | --- |
-| Hosted URL | **Pending deployment verification** |
-| Live example | **Pending: origin, destination, departure, load, spacing, actual route count** |
-| Live check time | **Pending: date and timezone** |
-| Deployment revision | **Pending: short commit SHA** |
-| Test evidence | Use dated, revision-specific results in [VERIFICATION.md](VERIFICATION.md). |
+| Hosted URL | [xdeelord.pythonanywhere.com](https://xdeelord.pythonanywhere.com/) — **ready for recording** on a free PythonAnywhere Beginner account. Hosted live API, demo, and asset checks passed; visible demo map/checkpoint/slider checks passed. |
+| Live example | Chicago → Detroit; 32,000 lb; 50-mile spacing; departure `2026-10-26T01:45:46Z`. Three distinct routes: 282.92, 305.20, and 334.85 miles. Use a new future departure when recording. |
+| Live check time | **Passed 26 October 2026, 08:45 Manila** (00:45 UTC): live adapters/services; hosted HTTP and browser verification remain separate. |
+| Deployment revision | Runtime baseline `20b2528`, followed by the October 26 map-tile referrer-policy correction; see [VERIFICATION.md](VERIFICATION.md) for the final revision/evidence record. |
+| Live weather and corridor | All 23 checkpoint forecasts available; 154 corridor cells × 49 frames; zero unknown cell-hours. All sampled route weather was Low risk, and `route-1` was recommended. |
+| Test evidence | [CI run 40250357867](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/40250357867) passed at `20b2528`: 47 tests, frontend build, Docker build, and container frontend/API smoke. This does not verify a public hosted site. |
 | Preliminary weather check | Open-Meteo responded at three US locations on 2026-10-26 at 00:32 UTC (08:32 Manila). This does not establish TomTom routing or hosted deployment. |
+| Hosted live check | **Passed 09:00 Manila, 26 October:** six HTTP 200 responses, three distinct live routes, 23 complete checkpoint forecasts, 154 cells × 49 frames, zero unknown cell-hours. |
+| Hosted demo and assets | All three scenarios passed with 192 cells × 49 frames. Hosted smoke checks passed again after the map-tile correction. |
+| Visible browser checks | Road tiles visible; demo checkpoint details and +0/+24/+48 slider positions verified. A fresh hosted Chicago–Detroit live trip also rendered all three routes, checkpoint markers, and its corridor after the fix. |
+
+The live evidence is recorded locally in `output/live-verification/20261026T004545Z-plan.json`; its scope is **live adapters and services, not hosted HTTP or browser verification**. The checked weather was Low risk, so use the labeled synthetic demo to demonstrate hazards.
+
+Hosted evidence is recorded separately in `output/live-verification/20261026T010039Z-hosted.json` and `output/live-verification/20261026T0100Z-hosted-demo-smoke.json`. A visible road-tile issue was fixed by setting `SECURE_REFERRER_POLICY` to `strict-origin-when-cross-origin`; the hosted header and visible tiles were rechecked, all 32 backend tests passed, and hosted smoke checks passed after the fix. There is no need to spend recording time on this implementation detail unless asked.
+
+Loom is signed in to the **jgmolinawork** workspace and displayed a **14-day trial** on 26 October. Check the recorder's actual duration allowance before choosing a version. The browser security policy blocked automated use of the recording button; **click “Record a video” yourself directly in Loom**. No recording has been completed by these checks.
+
+## Set up the hosted recording
+
+Open [Wayfinder](https://xdeelord.pythonanywhere.com/) and wait for the initial demo map, route cards, and forecast frames. For the live portion, select **Live planning**, choose **Chicago, IL** and **Detroit, MI** from the suggestions, enter **32,000 lb** and **Every 50 mi**, then choose a new future departure within the next 48 hours. The form uses the origin's displayed **America/Chicago** timezone: enter Chicago local time, not Manila time. A departure about one hour ahead in that displayed timezone gives time to rehearse. Click **Find safest routes** and wait for both route and corridor results. Recheck the departure before the final take; do not reuse the dated verification timestamp after it has passed.
+
+Keep the actual hosted URL visible at the opening and closing. Hosted live HTTP checks have passed. Rehearse the fresh browser trip before recording and describe what is actually visible; do not claim all possible trips or weather conditions were tested.
 
 ## Five-minute version for Loom Starter
 
-Loom Starter stops recording at **5:00**, which is also the assessment's minimum duration. Use this compact version if your account has that limit. Finish speaking by **4:50**, leave the final app view visible, and let the recorder reach **5:00**. Check the saved duration and do not trim it below five minutes. The account's allowance still needs to be checked; do not buy an upgrade for this script. [Loom recording limits](https://support.atlassian.com/loom/docs/how-long-can-i-record/).
+Loom Starter stops recording at **5:00**, which is also the assessment's minimum duration. Use this compact version if the recorder shows that limit. Finish speaking by **4:50**, leave the final app view visible, and let the recorder reach **5:00**. Check the saved duration and do not trim it below five minutes. A trial was visible, but the recorder's actual allowance still needs checking; do not buy an upgrade for this script. [Loom recording limits](https://support.atlassian.com/loom/docs/how-long-can-i-record/).
 
 The main narration below is approximately 540 words. Practice it once with a timer, speaking naturally while performing the actions. Have results loaded before recording so provider wait time does not consume the five-minute take.
 
@@ -29,13 +45,15 @@ The main narration below is approximately 540 words. Practice it once with a tim
 
 ### 0:30–1:00 — Live evidence and demo distinction
 
-**Show:** A verified live result only if full routing works. Then show **Explore demo → Mixed conditions**, 32,000 lb, 25-mile spacing.
+**Show:** A fresh Chicago → Detroit result in the hosted app with 32,000 lb and 50-mile spacing, rehearsed before recording, or the dated hosted verification record. Then show **Explore demo → Mixed conditions**, 32,000 lb, 25-mile spacing.
 
 > Live mode uses TomTom for geocoding and truck routing, with Open-Meteo forecasts. The provider key stays on the server. The verification record states which live checks have passed. Live alternatives are deduplicated; if fewer than three exist, the app reports that shortfall.
 >
 > For reproducible hazards, I’m using the labeled demo: three saved OSRM driving routes with synthetic weather. These are not current forecasts or verified truck-restriction data.
 
-**Required status line if still true at recording:** “Open-Meteo responded successfully at three US locations; TomTom routing and the hosted deployment are still pending.” If this remains true, present the recording as a progress demonstration, not a finished hosted submission. Remove that line only after the corresponding checks actually pass.
+**If showing the dated evidence, say:** “The October 26 hosted API check returned three routes and 23 complete checkpoint forecasts, plus 49 corridor forecast frames; all sampled route weather was Low risk.”
+
+**Verification wording:** “The app is deployed on PythonAnywhere. Hosted live API checks passed, along with the demo, assets, and visible map controls.” Only describe a fresh live-browser trip as verified after rehearsing it successfully.
 
 ### 1:00–1:50 — Three routes and ranking
 
@@ -99,13 +117,15 @@ Use the following sequence only if the account permits recording longer than fiv
 
 ## 0:35–1:30 — Live path and repeatable demo
 
-**Click:** **Live planning**. Select the verified origin and destination suggestions. Use a future departure within the next 48 hours, 32,000 lb, and **Every 25 mi**. Click **Find safest routes**. Wait for route cards and the corridor forecast.
+**Click:** **Live planning**. Select Chicago and Detroit from the location suggestions. Use a fresh future departure within the next 48 hours, 32,000 lb, and **Every 50 mi**, matching the verified trip's load and spacing. Click **Find safest routes**. Wait for route cards and the corridor forecast. The previously checked departure is historical evidence, not an input to reuse after it passes.
 
 **Say only after this live request works:**
 
 > This request uses TomTom for geocoding and truck routing, and Open-Meteo for forecasts. The API key stays on the Django server. Here are the actual alternatives returned for this trip, each with its own travel time and checkpoint arrival times.
 >
 > The provider may return fewer than three distinct alternatives. The app makes bounded fallback requests and shows a warning if it still cannot find three.
+
+**Verified example to mention if useful:** “The October 26 service check returned three routes of about 283, 305, and 335 miles, with 23 complete checkpoint forecasts. Its corridor had 154 cells across 49 hourly frames, with no unknown values.” State this as the dated check, not a promise that every fresh request produces identical weather or distances.
 
 **Click:** **Explore demo**, choose **Mixed conditions**, keep 32,000 lb and 25-mile spacing, then click **Find safest routes**.
 
@@ -202,7 +222,8 @@ Use the following sequence only if the account permits recording longer than fiv
 ## Submission links
 
 - Public repository: [xdeelord24/wayfinder-weather-routing](https://github.com/xdeelord24/wayfinder-weather-routing).
-- Hosted application: **Pending verified public URL**.
+- Hosted application: [xdeelord.pythonanywhere.com](https://xdeelord.pythonanywhere.com/) — live, with hosted API/demo/assets and visible demo-map checks passed.
 - Loom walkthrough: **Pending recording and playback check**.
+- Assessment submission: **Pending the Loom URL and a confirmed submission receipt**.
 
 Submission is complete only when the receiving form shows success or Spotter sends a receipt. A recording, saved form, or clicked button alone does not prove receipt.

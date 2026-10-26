@@ -4,15 +4,32 @@ Use this with [WALKTHROUGH.md](WALKTHROUGH.md). The requested video is **5–10 
 
 Use your own voice and explain what you can demonstrate. Do not purchase an upgrade just to follow the longer script.
 
+Loom is signed in to the **jgmolinawork** workspace and displayed a **14-day trial** on 26 October 2026. Check its recorder allowance directly before deciding between the five- and seven-minute versions. The browser security policy blocked automated use of Loom's recording button, so **click “Record a video” and start the recording yourself in Loom**. No recording or upload is confirmed yet.
+
+## Verified evidence available for the video
+
+- **Live services passed at 08:45 Manila on 26 October:** Chicago → Detroit, 32,000 lb, 50-mile spacing, departure `2026-10-26T01:45:46Z`. Rehearsal and recording need a new future departure.
+- **Three routes:** 282.92, 305.20, and 334.85 miles; 23 complete checkpoint forecasts; all sampled route weather Low risk; route 1 recommended.
+- **Corridor:** 154 cells, 49 hourly frames, zero unknown cell-hours. These were live adapter/service checks, not proof of a hosted browser session.
+- **CI passed:** [run 40250357867](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/40250357867), revision `20b2528`, including 47 tests, frontend build, Docker build, and container frontend/API smoke.
+- **Host ready:** [Wayfinder on PythonAnywhere](https://xdeelord.pythonanywhere.com/), using a free Beginner account. The 09:00 Manila hosted live check passed six HTTP requests: three distinct live routes, 23 complete checkpoints, 154 cells × 49 frames, and zero unknown cell-hours.
+- **Demo/assets passed:** all three scenarios returned 192 cells × 49 frames. Hosted smoke checks also passed after the map-tile fix.
+- **Visible browser checks passed:** road tiles, demo checkpoint details, and +0/+24/+48 slider positions. A map-tile referrer-policy correction was verified on the hosted response; all 32 backend tests passed after that correction. A fresh Chicago–Detroit live trip also rendered three alternatives, checkpoint markers, and its corridor.
+- **Runtime:** baseline `20b2528` plus the October 26 referrer-policy correction. Use [VERIFICATION.md](VERIFICATION.md) for the final revision and exact evidence scope.
+- **Still pending:** your Loom recording, playable share URL, and confirmed assessment submission. Rehearse a fresh live trip before narrating its visible result.
+
 ## Before recording
 
-- [ ] Confirm the hosted app URL and deployment revision in [VERIFICATION.md](VERIFICATION.md).
-- [ ] Open the hosted app and wait for startup, map tiles, route cards, and corridor frames. A cold service may take longer on the first load.
-- [ ] Run the intended live trip once. Note its origin, destination, future departure, load, spacing, route count, and check time. Do not reuse a departure that is now in the past.
+- [ ] Open [https://xdeelord.pythonanywhere.com/](https://xdeelord.pythonanywhere.com/) and wait for startup, map tiles, route cards, and corridor frames.
+- [ ] Read the current revision and evidence scope in [VERIFICATION.md](VERIFICATION.md). Hosted live API, demo/assets, and visible demo controls have passed.
+- [ ] Select **Live planning** and choose **Chicago, IL → Detroit, MI** from location suggestions; enter **32,000 lb** and **Every 50 mi**.
+- [ ] Set a fresh future departure within the next 48 hours, using the form's displayed **America/Chicago** timezone. Enter Chicago local time, not Manila time. Approximately one hour ahead leaves time for rehearsal.
+- [ ] Click **Find safest routes**; wait for route and corridor results. Note actual route count and check time. Check that departure is still future before the final take; the recorded 26 October verification timestamp is historical evidence.
 - [ ] Rehearse Mixed conditions with 32,000 lb / 25 miles and No travel conditions with 50-mile spacing. Identify an easy-to-explain checkpoint.
 - [ ] Open only the hosted app, public README, relevant code, and current verification evidence. Hide email, other client projects, `.env`, API keys, and terminals containing secrets.
 - [ ] Use a browser window large enough to show route cards and map together. Check text readability in the recording preview; avoid continuous zoom changes.
 - [ ] In your own Loom account, choose screen recording and your microphone. Camera is optional unless Spotter separately requires it. Select only the relevant window or display.
+- [ ] Click **Record a video** directly yourself in the jgmolinawork Loom workspace; do not attempt to bypass the browser's blocked automated recording action.
 - [ ] Make a short microphone test and play it back. Confirm the recording allowance displayed by your account and select the matching script; the assessment requires at least five minutes.
 
 ## Five-minute recording (Starter)
@@ -59,7 +76,9 @@ If a real provider request fails during the take, describe the visible result ho
 | Field | Value |
 | --- | --- |
 | GitHub repository | https://github.com/xdeelord24/wayfinder-weather-routing |
-| Hosted application | **Add verified public URL** |
+| Hosted application | https://xdeelord.pythonanywhere.com/ — live; hosted API/demo/assets and visible demo controls verified |
 | Loom walkthrough | **Add final playable share URL** |
+
+The hosted link is ready. The assessment itself remains pending until the Loom link is ready and Spotter's submission is confirmed.
 
 The invitation sets a four-day deadline and a maximum of 16 working hours. Use the actual invitation timestamp to confirm the cutoff and record time honestly; this checklist does not assert how much time has been spent. Submit once the links are ready, then retain the success page or receipt with its timestamp. Do not mark the assessment complete based only on a prepared form.

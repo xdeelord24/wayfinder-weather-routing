@@ -2,7 +2,7 @@
 
 This record distinguishes implementation checks, fixture demonstrations, live providers, and deployment. **Pending means no verified result has been recorded.** Source inspection, tests, and a successful build do not establish live provider or hosted-site behavior.
 
-Live API verification and deployment work resumed with user authorization on **October 26, 2026**. Open-Meteo checks passed. TomTom routing requires the server-side key, and a public deployment and recording have not yet been verified.
+Live API verification and deployment work resumed with user authorization on **October 26, 2026**. Full TomTom and Open-Meteo service checks passed, followed by hosted HTTP verification at [xdeelord.pythonanywhere.com](https://xdeelord.pythonanywhere.com). A map-tile referrer-policy issue found during visible checking was corrected, regression-tested, deployed, and verified in the hosted desktop demonstration. Mobile results remain the historical local checks. The Loom recording remains pending.
 
 The original checks below were performed on **October 24, 2026, Asia/Manila** (October 23 UTC); the October 26 recheck is recorded separately below. The demo uses saved OSRM/OpenStreetMap driving geometry and synthetic weather; demo results do not certify live truck routing.
 
@@ -14,6 +14,56 @@ The original checks below were performed on **October 24, 2026, Asia/Manila** (O
 - The provider's HTTP Date was **26 October 2026 00:32:46 UTC**, and current-weather time was 00:30 UTC, corroborating the execution clock.
 - Command: `.venv\Scripts\python.exe scripts/verify_live.py`. Local evidence: `output/live-verification/20261026T003242Z-weather.json` (excluded from Git).
 - Full routing check command, once configured: `.venv\Scripts\python.exe scripts/verify_live.py --live-plan`. Hosted HTTP/browser behavior still requires separate checks.
+- [CI run 40250357867](https://github.com/xdeelord24/wayfinder-weather-routing/actions/runs/40250357867) passed at revision `20b2528`, including all 47 tests, frontend build, Docker build, and production-container frontend/API smoke.
+
+### Full live routing and weather result
+
+Command: `.venv\Scripts\python.exe scripts/verify_live.py --live-plan`. Ran **00:45:45–00:45:52 UTC / 08:45 Asia/Manila on October 26**. Local credential-free evidence: `output/live-verification/20261026T004545Z-plan.json`.
+
+| Input or check | Observed result |
+| --- | --- |
+| Trip | Chicago, Illinois → Detroit, Michigan |
+| Departure | 2026-10-26 01:45:46 UTC |
+| Cargo and spacing | 32,000 lb; 50 miles |
+| Live alternatives | Three distinct routes: 282.92, 305.20, and 334.85 miles |
+| Arrival-time forecasts | All 23 checkpoints complete |
+| Corridor coverage | 154 cells × 49 hourly frames; zero unknown cell-hours |
+| Recommendation | Route 1; all alternatives currently Low risk |
+| Provider traffic | Nine HTTP requests in the bounded verification run |
+
+No application fix was needed for this local service check. It verifies the actual backend adapters and services; the hosted HTTP and browser results are recorded separately below. Synthetic demo scenarios remain useful for showing hazards when the live forecasts are all Low.
+
+## October 26 hosted verification
+
+**URL:** [https://xdeelord.pythonanywhere.com](https://xdeelord.pythonanywhere.com). PythonAnywhere runs Python 3.12 with one WSGI worker from `/home/xdeelord/wayfinder`. Production settings use `DJANGO_DEBUG=false`, the exact public hostname, and a private `.env` with permissions `600`; `manage.py check` passed. Disk usage was approximately 218 MiB by `du`, with about 230 MB reported against the 512 MB quota. The free web app's current expiry is November 26, 2026; monthly manual renewal is required.
+
+The initial `wayfinder-pythonanywhere-20261026T004930Z.zip` bundle used application runtime from revision `20b2528`. It included 22 runtime/build files, with credentials and the supplied assessment excluded. The hosted map correction described below is a subsequent runtime settings change.
+
+Command: `.venv\Scripts\python.exe scripts/verify_hosted.py https://xdeelord.pythonanywhere.com`. Ran **01:00:39–01:00:50 UTC / 09:00 Asia/Manila**. Credential-free local evidence: `output/live-verification/20261026T010039Z-hosted.json`.
+
+| Hosted check | Observed result |
+| --- | --- |
+| Public requests | Six requests, all HTTP 200; no retries |
+| Health and frontend HTML | Healthy with routing configured; Wayfinder title and built JS/CSS references present |
+| Live location selection | Chicago and Detroit IDs returned by the hosted search endpoints |
+| Departure, cargo, spacing | 2026-10-26 02:00:43 UTC; 32,000 lb; 50 miles |
+| Live alternatives | Three distinct geometries: 282.92, 305.20 and 334.85 miles |
+| Arrival-time forecasts | All 23 checkpoints complete; forecast intervals cover ETAs |
+| Mileage and eligibility | Exposure totals conserve route mileage; eligibility matches hazards |
+| Corridor | 154 cells × 49 frames; zero unknown cell-hours |
+| Recommendation | Route 1; all alternatives Low risk at this observation |
+
+The separate command `.venv\Scripts\python.exe scripts/smoke.py https://xdeelord.pythonanywhere.com --frontend` also passed. It verified two served frontend entry assets with correct content types and nonempty bodies. Mixed/25-mile chose Route 3, clear/10-mile chose Route 1, and blocked/50-mile returned no recommendation. All three demos had 192 cells and 49 frames; the mixed case changed 70 cells between +0 and +48 hours. Evidence: `output/live-verification/20261026T0100Z-hosted-demo-smoke.json`. These checks predate the referrer-policy correction and do not certify map tile rendering.
+
+### Hosted desktop browser verification and map correction
+
+Visible inspection found OpenStreetMap 403 tile placeholders. The hosted page sent Django's default `Referrer-Policy: same-origin`, which suppresses the origin referrer on cross-origin tile requests. The correction sets `SECURE_REFERRER_POLICY="strict-origin-when-cross-origin"`, retaining an origin referrer on HTTPS tile requests without sending the page path. This matches the [OpenStreetMap tile policy](https://operations.osmfoundation.org/policies/tiles/).
+
+The response-header regression assertion failed before this change and passed after it; all 32 backend tests passed. The corrected host returned HTTP 200 with `Referrer-Policy: strict-origin-when-cross-origin`. The deployed settings SHA-256, `28418c3ea2062633ef9996d96189063829822602df3248a79ae299396eafc6ba`, matched the local file.
+
+The hosted demo/assets smoke passed again with the new referrer-header assertion. Evidence: `output/live-verification/20261026T0104Z-hosted-referrer-smoke.json`.
+
+Visible desktop checks confirmed real OpenStreetMap tiles with routes and heatmap; the evidence screenshot is `output/live-verification/pythonanywhere-map-fixed.png`. In the mixed demonstration, selecting the mile-125 checkpoint showed 20.5 mph wind, 0.68 in/hr rain, and Severe risk. Keyboard movement of the actual slider to +0, +24, and +48 hours changed the labels/dates while leaving the recommendation unchanged. A fresh Chicago–Detroit live trip after the correction also visibly rendered three alternatives, checkpoint markers, and the corridor; screenshot: `output/live-verification/pythonanywhere-live-routes.png`. A fresh hosted mobile pass has not been recorded.
 
 ## Automated checks
 
@@ -53,14 +103,16 @@ Final desktop/mobile checks reported **zero page errors, zero console errors, an
 
 | Check | Status | Evidence to record |
 | --- | --- | --- |
-| Live TomTom location search and truck routing | Pending server-side key | Record actual trip, UTC timestamp, and distinct route count after live execution. |
-| Live Open-Meteo forecasts at actual coordinates | Passed October 26 | Three US coordinates, four requested times through +48 hours, no warnings; evidence above. Route-checkpoint integration remains pending TomTom. |
-| Live three-route example | Pending | Record origin, destination, departure, cargo, spacing, and distinct alternatives. |
-| Hosted frontend and `/api/health` | Pending Render account access | Record public URL, deployment revision, and check time. |
-| Hosted live planning and corridor request | Pending deployment and key | Record successful live request plus visible route and corridor results. |
+| Live TomTom location search and truck routing | Passed October 26 | Real Chicago–Detroit request returned three distinct alternatives; details above. |
+| Live Open-Meteo forecasts | Passed October 26 | Three-coordinate weather probe, then all 23 live route checkpoints and 154 × 49 corridor values complete. |
+| Live three-route example | Passed October 26 | 32,000 lb, 50-mile spacing, departure 01:45:46 UTC; details above. |
+| Hosted frontend assets and `/api/health` | Passed October 26 | Public HTTPS responses and both JS/CSS entry assets verified; details above. |
+| Hosted live planning and corridor request | Passed October 26 | Six-request hosted run verified three routes, 23 complete checkpoint forecasts, and 154 × 49 corridor coverage. |
+| Hosted visible desktop demo | Passed October 26 | Corrected map tiles, routes/heatmap, mile-125 Severe popup, and actual +0/+24/+48-hour slider controls verified. |
+| Hosted mobile UI | Not rechecked | October 24 mobile evidence is local; it is not a fresh hosted mobile run. |
 | Public repository | Verified public | [xdeelord24/wayfinder-weather-routing](https://github.com/xdeelord24/wayfinder-weather-routing), branch `main`; initial published revision `a31400fe4fa33e78c64267e76e6676f5f8b5c166`. A 53-file staged scan excluded the assessment PDF and `.env` and found no actual secret. |
 | Loom walkthrough | Pending | Recording URL; verify narration and coverage. |
 
 ## Evidence notes
 
-Browser screenshots are stored locally in `output/playwright/`, which is excluded from Git; the selected repository preview is [assets/demo-preview.png](assets/demo-preview.png). The repository is public and revision `cb8ae01` passed CI, including the container HTML/assets checks. Live Open-Meteo results are recorded separately above; TomTom, hosted-site, and recording completion have not been asserted. Documentation and verification-script changes do not change the application runtime.
+Historical browser screenshots are stored locally in `output/playwright/`; the new hosted screenshot and HTTP evidence are under `output/live-verification/`. Both directories are excluded from Git; the selected repository preview is [assets/demo-preview.png](assets/demo-preview.png). The repository is public and revision `20b2528` passed CI, including the container HTML/assets checks. The later referrer-policy correction passed local backend tests, hosted HTTP/header checks, and the recorded desktop demonstration. The Loom recording and final assessment submission have not been confirmed.
